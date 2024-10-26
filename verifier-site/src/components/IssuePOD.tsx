@@ -20,7 +20,8 @@ export function IssuePOD({ numFrogs }: issuePODProps) {
   const enoughFrogs = numFrogs >= frogThreshold;
 
   async function getID() {
-    const semaphoreIDCommitment = await z.identity.getSemaphoreV3Commitment();
+    // const semaphoreIDCommitment = await z.identity.getSemaphoreV3Commitment();
+    const semaphoreIDCommitment = await z.identity.getSemaphoreV4Commitment();
     setIDCommit(semaphoreIDCommitment);
     console.log("semaphoreIDCommitment", semaphoreIDCommitment);
   }

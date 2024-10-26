@@ -41,7 +41,7 @@ export function AddToZupass({ podData }: AddToZupassProps): ReactNode {
             try {
               setPCDAdded(true);
               await z.pod.collection("FrogWhisperer").insert(podData);
-              // await z.fs.put("/FrogWhisperer", serializedPodPCD);
+              console.log("added frog pod!");
             } catch (e) {
               console.log(e);
             }
