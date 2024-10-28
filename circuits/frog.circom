@@ -99,12 +99,8 @@ template EdDSAFrogPCD () {
         frogMessageHash
     );
 
-    // // Verify semaphore private identity matches the frog owner semaphore ID.
-    // signal semaphoreSecret <== Poseidon(2)([
-    //     semaphoreIdentityNullifier,
-    //     semaphoreIdentityTrapdoor
-    // ]);
-    // signal semaphoreIdentityCommitment <== Poseidon(1)([semaphoreSecret]);
+    // Verify semaphore private identity matches the frog owner semaphore ID. 
+    // (no longer need to calculate semaphoreIdentityCommitment because not fetching user's semaphoreSecrets!)
     ownerSemaphoreId === semaphoreIdentityCommitment;
 
     // Calculate nullifier

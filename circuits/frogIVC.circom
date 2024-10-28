@@ -50,11 +50,11 @@ template frogIVC () {
 
     component checkFrogSignerPubkeyAx = IsEqual();
     checkFrogSignerPubkeyAx.in[0] <== external_inputs[10];
-    checkFrogSignerPubkeyAx.in[1] <== 6827523554590803092735941342538027861463307969735104848636744652918854385131;
+    checkFrogSignerPubkeyAx.in[1] <== 20383755578472733346424989760022627335264315912617087859543520915083134838006;
 
     component checkFrogSignerPubkeyAy = IsEqual();
     checkFrogSignerPubkeyAy.in[0] <== external_inputs[11];
-    checkFrogSignerPubkeyAy.in[1] <== 19079678029343997910757768128548387074703138451525650455405633694648878915541;
+    checkFrogSignerPubkeyAy.in[1] <== 18472361385915627675129353902848513295760497725789742035053351217407500555539;
 
     // now check that old ivc_output < new frogMessageHash. just check strictly < b/c javascript will do dedup for us.
     // do a lessThan check bc greater than circuit is just using the lessThan circuit. to be as direct as possible.
