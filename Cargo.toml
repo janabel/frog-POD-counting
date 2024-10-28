@@ -1,0 +1,108 @@
+[package]
+name = "unique-frogs-sonobe"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+# to compile and execute a binary, run:
+# cargo run --bin main --release -- --nocapture
+# cargo run --bin main2 --release -- --nocapture
+
+# cargo run --bin main_params_ser --release -- --nocapture
+# cargo run --bin main_IVC_ser --release -- --nocapture
+# cargo run --bin main_IVC_deser_verify --release -- --nocapture
+
+# cargo run --bin main_params_ser_pedersen --release -- --nocapture
+# cargo run --bin main_IVC_ser_pedersen --release -- --nocapture
+# cargo run --bin main_IVC_deser_verify_pedersen --release -- --nocapture
+
+# ## used to serialize nova/g16 params
+# [[bin]]
+# name = "main"
+# path = "src/main.rs"
+
+# ## reads in serialized params to do folding/proving/verifying 
+# [[bin]]
+# name = "main2"
+# path = "src/main2.rs"
+
+## does folding and serializes nova params using new serializations
+[[bin]]
+name = "main_params_ser"
+path = "src/KZG/main_params_ser.rs"
+
+## does folding and serializes IVC proof to output file
+[[bin]]
+name = "main_IVC_ser"
+path = "src/KZG/main_IVC_ser.rs"
+
+## deserializes and verifies IVC proof
+[[bin]]
+name = "main_IVC_deser_verify"
+path = "src/KZG/main_IVC_deser_verify.rs"
+
+# #########################
+
+## does folding and serializes nova params using new serializations, uses pedersen commitments,
+[[bin]]
+name = "main_params_ser_pedersen"
+path = "src/pedersen/main_params_ser_pedersen.rs"
+
+## does folding and serializes IVC proof to output file, uses pedersen commitments
+[[bin]]
+name = "main_IVC_ser_pedersen"
+path = "src/pedersen/main_IVC_ser_pedersen.rs"
+
+## deserializes and verifies IVC proof, uses pedersen commitments
+[[bin]]
+name = "main_IVC_deser_verify_pedersen"
+path = "src/pedersen/main_IVC_deser_verify_pedersen.rs"
+
+
+[dependencies]
+ark-serialize = { version = "^0.4.0", default-features = false, features = ["derive"]}
+num-traits = "0.2"
+ark-groth16 = { version = "^0.4.0" }
+ark-bn254 = { version = "0.4.0", features = ["r1cs"] }
+ark-grumpkin = {version="0.4.0", features=["r1cs"]}
+ark-pallas = { version = "0.4.0", features = ["r1cs"] }
+ark-vesta = { version = "0.4.0", features = ["r1cs"] }
+ark-ec = "0.4.1"
+ark-ff = "0.4.1"
+ark-r1cs-std = { version = "0.4.0", default-features = false }
+ark-relations = { version = "0.4.0", default-features = false }
+ark-snark = { version = "^0.4.0", default-features = false }
+ark-poly-commit = "^0.4.0"
+ark-crypto-primitives = { version = "^0.4.0", default-features = false, features = [
+    "r1cs",
+    "sponge",
+    "crh",
+] }
+ark-std = "0.4.0"
+color-eyre = "0.6.2"
+num-bigint = "0.4.3"
+# Note: for testing purposes we use the 'light-test' feature when importing
+# Sonobe's folding-schemes, but for a real-world usage it must be used without
+# this feature (but then the DeciderETH circuit is bigger and takes more time
+# to compute).
+# folding-schemes = { git = "https://github.com/privacy-scaling-explorations/sonobe", package = "folding-schemes", branch="nova-decider-serialization", features=["light-test"]}
+# folding-schemes = { git = "https://github.com/janabel/sonobe", package = "folding-schemes", branch="ivc-proofs", features=["light-test"]} # for debugging pedersen ivc_proof.verify
+folding-schemes = { git = "https://github.com/privacy-scaling-explorations/sonobe", package = "folding-schemes", features=["light-test"]}
+solidity-verifiers = { git = "https://github.com/privacy-scaling-explorations/sonobe", package = "solidity-verifiers"}
+serde = "1.0.198"
+serde_json = "1.0.116"
+tiny-keccak = { version = "2.0", features = ["keccak"] }
+
+rand = "0.8.5"
+rand_chacha = "0.3" # for ChaCha20Rng
+rand_core = "0.6"   # For SeedableRng and core traits
+
+[patch.crates-io]
+# patch ark_curves to use a cherry-picked version which contains
+# bn254::constraints & grumpkin for v0.4.0 (once arkworks v0.5.0 is released
+# this will no longer be needed)
+ark-bn254 = { git = "https://github.com/arnaucube/ark-curves-cherry-picked", branch="cherry-pick"}
+ark-grumpkin = { git = "https://github.com/arnaucube/ark-curves-cherry-picked", branch="cherry-pick"}
+ark-circom = { git = "https://github.com/arnaucube/circom-compat" }
+ark-r1cs-std = { git = "https://github.com/winderica/r1cs-std", branch="cherry-pick" }
