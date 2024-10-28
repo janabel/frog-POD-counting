@@ -64,7 +64,8 @@ export function Prover(): ReactNode {
   }
 
   async function getID() {
-    const semaphoreIDCommitment = await z.identity.getSemaphoreV3Commitment();
+    const semaphoreIDCommitment = await z.identity.getSemaphoreV4Commitment();
+    console.log("semaphoreIDCommitment", semaphoreIDCommitment);
     return semaphoreIDCommitment;
   }
 
@@ -80,7 +81,8 @@ export function Prover(): ReactNode {
     );
   }
 
-  async function processProofInputs(): Promise<object> {
+  // async function processProofInputs(): Promise<object> {
+  async function processProofInputs() {
     // first make test frogs to insert to FrogCryptoTest
     // await makeTestFrogs(); // only run once
     // console.log("made test frogs!");
@@ -90,21 +92,21 @@ export function Prover(): ReactNode {
     console.log("semaphoreIDCommitment", semaphoreIDCommitment);
     // const semaphoreIDCommitment = result;
 
-    const frogPODList = await z.pod.collection("FrogCryptoTest").query(
+    const frogPODList = await z.pod.collection("FrogCrypto").query(
       // lookin for them frogs
       p.pod({
         entries: {
-          frogId: { type: "string" },
+          frogId: { type: "int" },
         },
       })
     );
 
-    // console.log("frogPCDList", frogPODList);
+    console.log("frogPODList", frogPODList);
 
     const promises = frogPODList.map(async (frogPOD: PODData) => {
       // console.log("frogPOD", frogPOD);
       const result = await parseFrogPOD(frogPOD, semaphoreIDCommitment);
-      // console.log("parsedFrogPOD: ", result);
+      console.log("parsedFrogPOD: ", result);
       return result;
     });
 

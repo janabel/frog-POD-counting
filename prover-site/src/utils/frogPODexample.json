@@ -1,0 +1,25 @@
+{
+  "id": "bb7a0fe3-318f-4b1f-aa65-1b1e0ae33ac4",
+  "jsonPOD": {
+    "entries": {
+      "beauty": 0,
+      "biome": 1,
+      "description": "The Phantasmal Poison Frog, native to the Amazon rainforests, boasts a captivating appearance with its striking, often blue, and black coloration. This small amphibian is known for its potent skin toxins, which serve as a warning to potential predators and make it one of the most toxic animals in the world.",
+      "frogId": 20,
+      "imageUrl": "https://api.zupass.org/frogcrypto/images/10f6f9e3-ae50-4e60-9d37-27ca24846c74",
+      "intelligence": 3,
+      "jump": 1,
+      "name": "Phantasmal Poison Frog",
+      "owner": {
+        "cryptographic": "0x255d3da918e31e470e3cc6d083ca89b55ced90671ddedb37e7d377d9736bad94"
+      },
+      "pod_type": "frogcrypto.frog",
+      "rarity": 1,
+      "speed": 5,
+      "temperament": 3,
+      "timestampSigned": 1729277805160
+    },
+    "signature": "Re2yb2nlSZwxdKR0kEIZQIcRFm7hGph7/518LIv/Pp0Q5NU7tw1hdfG3K/uZvZD130I10FgyOQqUJts901v8AQ",
+    "signerPublicKey": "ExWVEuffSaNfNCBvMuY/Lfolof7MTEWKcoQetGz81qg"
+  }
+}

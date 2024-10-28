@@ -1,0 +1,52 @@
+{
+  "type": "eddsa-frog-pcd",
+  "pcd": {
+    "id": "1837127c-a952-45d4-bf25-d2a13b15a169",
+    "eddsaPCD": {
+      "type": "eddsa-pcd",
+      "pcd": {
+        "type": "eddsa-pcd",
+        "id": "8818fe37-55bf-48bd-88fc-4d2e77c1a881",
+        "claim": {
+          "message": [
+            "27",
+            "1",
+            "1",
+            "a",
+            "6",
+            "2",
+            "2",
+            "0",
+            "1912e9fc3be",
+            "3000477e9507331b8e73fb6d3b3b705e22b02021ff40c19965c5b9dc82a8ca89",
+            "0",
+            "0",
+            "0"
+          ],
+          "publicKey": [
+            "0f183dcba06341a4549d78c3f8ca0060a9d6aca795103cb6957d1e2973b5fdeb",
+            "2a2eb70efeebb5facca2f3668ca5642513be542bab285055ccdcbc18cc125fd5"
+          ]
+        },
+        "proof": {
+          "signature": "56c1fef94eeb7640750dd31c0a4ac82f6654f24670baf7edbd4d3eb938765e83ea3766db70d249af43b2f8ee6b610078a4ccd0176e0d3fe27cd5b0ba8c70a805"
+        }
+      }
+    },
+    "data": {
+      "name": "Marañón Poison Frog",
+      "description": "The Marañón Poison Frog, native to northern Peru, is known for its vibrant blue and black coloration, similar to some other poison dart frogs, but it doesn't possess the same level of toxicity.",
+      "imageUrl": "https://api.zupass.org/frogcrypto/images/7a04a73f-e869-4837-8354-e0a301953cc7",
+      "frogId": 39,
+      "biome": 1,
+      "rarity": 1,
+      "temperament": 10,
+      "jump": 6,
+      "speed": 2,
+      "intelligence": 2,
+      "beauty": 0,
+      "timestampSigned": 1723064107966,
+      "ownerSemaphoreId": "21711510168635182051334357427785411794318044815986410056285364391413272857225"
+    }
+  }
+}
