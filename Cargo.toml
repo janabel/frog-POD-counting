@@ -80,7 +80,7 @@ ark-crypto-primitives = { version = "^0.4.0", default-features = false, features
     "crh",
 ] }
 ark-std = "0.4.0"
-color-eyre = "0.6.2"
+color-eyre = "=0.6.2"
 num-bigint = "0.4.3"
 # Note: for testing purposes we use the 'light-test' feature when importing
 # Sonobe's folding-schemes, but for a real-world usage it must be used without
@@ -89,10 +89,12 @@ num-bigint = "0.4.3"
 # folding-schemes = { git = "https://github.com/privacy-scaling-explorations/sonobe", package = "folding-schemes", branch="nova-decider-serialization", features=["light-test"]}
 # folding-schemes = { git = "https://github.com/janabel/sonobe", package = "folding-schemes", branch="ivc-proofs", features=["light-test"]} # for debugging pedersen ivc_proof.verify
 folding-schemes = { git = "https://github.com/privacy-scaling-explorations/sonobe", package = "folding-schemes", features=["light-test"]}
+frontends = { git = "https://github.com/privacy-scaling-explorations/sonobe", package = "frontends"}
 solidity-verifiers = { git = "https://github.com/privacy-scaling-explorations/sonobe", package = "solidity-verifiers"}
-serde = "1.0.198"
+serde = {version = "1.0.198", features = ["derive"]}
 serde_json = "1.0.116"
 tiny-keccak = { version = "2.0", features = ["keccak"] }
+libm = "0.2.10"
 
 rand = "0.8.5"
 rand_chacha = "0.3" # for ChaCha20Rng
