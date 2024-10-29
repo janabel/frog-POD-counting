@@ -53,40 +53,64 @@ template EdDSAFrogPCD () {
     var TWO_POWER_128;
     TWO_POWER_128 = 340282366920938463463374607431768211456;
 
-    // Calculate "message" representing the frog, which is a hash of the fields.
-    signal frogMessageHash <== Poseidon(13)([
-        frogId,
-        biome,
-        rarity,
-        temperament,
-        jump,
-        speed,
-        intelligence,
-        beauty,
-        timestampSigned,
-        ownerSemaphoreId,
-        reservedField1,
-        reservedField2,
-        reservedField3
-    ]);
+    signal input contentID;
 
-    signal output frogMessageHashSmall;
-    signal output frogMessageHashBig;
+    signal output contentIDSmall;
+    signal output contentIDBig;
 
-    frogMessageHashSmall <-- frogMessageHash % TWO_POWER_128; // least signif 128 bits of frogMessageHash
-    frogMessageHashBig <-- frogMessageHash \ TWO_POWER_128; // most signif 128 bits of frogMessageHash
+    // remainder of this is just checking that frogMessageHashSmall and frogMessageHashBig are correct
+    contentIDSmall <-- contentID % TWO_POWER_128; // least signif 128 bits of frogMessageHash
+    contentIDBig <-- contentID \ TWO_POWER_128; // most signif 128 bits of frogMessageHash
 
     component lessThanSmall = LessThan(130);
-    lessThanSmall.in[0] <== frogMessageHashSmall;
+    lessThanSmall.in[0] <== contentIDSmall;
     lessThanSmall.in[1] <== TWO_POWER_128;
     lessThanSmall.out === 1;
 
     component lessThanBig = LessThan(130);
-    lessThanBig.in[0] <== frogMessageHashBig;
+    lessThanBig.in[0] <== contentIDBig;
     lessThanBig.in[1] <== TWO_POWER_128;
     lessThanBig.out === 1;
 
-    frogMessageHash === frogMessageHashSmall + TWO_POWER_128 * frogMessageHashBig;
+    contentID === contentIDSmall + TWO_POWER_128 * contentIDBig;
+
+    // // Calculate "message" representing the frog, which is a hash of the fields.
+    // signal frogMessageHash <== Poseidon(13)([
+    //     frogId,
+    //     biome,
+    //     rarity,
+    //     temperament,
+    //     jump,
+    //     speed,
+    //     intelligence,
+    //     beauty,
+    //     timestampSigned,
+    //     ownerSemaphoreId,
+    //     reservedField1,
+    //     reservedField2,
+    //     reservedField3
+    // ]);
+    
+    // // need to split frogmessagehash into small and big parts (base 2^128 rep) in order to do sorting checks in IVC circuit 
+    // // since (greater/less than circuits don't go up to full signal 253.sth bits)
+    // signal output frogMessageHashSmall;
+    // signal output frogMessageHashBig;
+
+    // // remainder of this is just checking that frogMessageHashSmall and frogMessageHashBig are correct
+    // frogMessageHashSmall <-- frogMessageHash % TWO_POWER_128; // least signif 128 bits of frogMessageHash
+    // frogMessageHashBig <-- frogMessageHash \ TWO_POWER_128; // most signif 128 bits of frogMessageHash
+
+    // component lessThanSmall = LessThan(130);
+    // lessThanSmall.in[0] <== frogMessageHashSmall;
+    // lessThanSmall.in[1] <== TWO_POWER_128;
+    // lessThanSmall.out === 1;
+
+    // component lessThanBig = LessThan(130);
+    // lessThanBig.in[0] <== frogMessageHashBig;
+    // lessThanBig.in[1] <== TWO_POWER_128;
+    // lessThanBig.out === 1;
+
+    // frogMessageHash === frogMessageHashSmall + TWO_POWER_128 * frogMessageHashBig;
 
     // Verify frog signature
     EdDSAPoseidonVerifier()(
@@ -96,10 +120,10 @@ template EdDSAFrogPCD () {
         frogSignatureS,
         frogSignatureR8x,
         frogSignatureR8y,
-        frogMessageHash
+        contentID
     );
 
-    // Verify semaphore private identity matches the frog owner semaphore ID. 
+    // Verify semaphore public identity matches the frog owner semaphore ID. 
     // (no longer need to calculate semaphoreIdentityCommitment because not fetching user's semaphoreSecrets!)
     ownerSemaphoreId === semaphoreIdentityCommitment;
 
@@ -127,5 +151,6 @@ template EdDSAFrogPCD () {
 //     frogSignerPubkeyAx,
 //     frogSignerPubkeyAy,
 //     externalNullifier,
-//     watermark
+//     watermark,
+//     contentID
 // ] } = EdDSAFrogPCD();

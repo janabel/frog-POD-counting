@@ -14,7 +14,7 @@ template frogIVC () {
     // frogMsgHash = frogMsgHash_small_old + 2^128 * frogMsgHash_big_old
     // ivc_input = [frogMsgHash_small_old, frogMsgHash_big_old, frogCounter];
     signal input ivc_input[3];
-    signal input external_inputs[21];
+    signal input external_inputs[22];
     signal output ivc_output[3];
 
     // EdDSAFrogPCD: Claim being proved:
@@ -44,6 +44,7 @@ template frogIVC () {
     frogVerify.reservedField1 <== external_inputs[18];
     frogVerify.reservedField2 <== external_inputs[19];
     frogVerify.reservedField3 <== external_inputs[20];
+    frogVerify.contentID <== external_inputs[21]; // it's fine to manually supply contentID b/c to lie and pass the proof, would have to find m* st sign(m*) = sign(m), breaking security of digital signature scheme
 
     // need to also check that the public key of the signature corresponds to official FrogCrypto public key
     // so that user cannot sign/put their own frogs into FrogCrypto
@@ -60,24 +61,24 @@ template frogIVC () {
     // do a lessThan check bc greater than circuit is just using the lessThan circuit. to be as direct as possible.
     // compute (ivc_input[1] < frogMessageHashBig)  OR (frogMessageHashBig = ivc_input[1] AND ivc_input[0] < frogMessageHashSmall)
     
-    signal frogMessageHashSmall;
-    frogMessageHashSmall <== frogVerify.frogMessageHashSmall;
-    signal frogMessageHashBig;
-    frogMessageHashBig <== frogVerify.frogMessageHashBig;
+    signal contentIDSmall;
+    contentIDSmall <== frogVerify.contentIDSmall;
+    signal contentIDBig;
+    contentIDBig <== frogVerify.contentIDBig;
 
     component bigLessThan = LessThan(130);
     bigLessThan.in[0] <== ivc_input[1];
-    bigLessThan.in[1] <== frogMessageHashBig;
+    bigLessThan.in[1] <== contentIDBig;
     signal bigLessThanResult <== bigLessThan.out;
 
     component bigEqual = IsEqual();
-    bigEqual.in[0] <== frogMessageHashBig;
+    bigEqual.in[0] <== contentIDBig;
     bigEqual.in[1] <== ivc_input[1];
     signal bigEqualResult <== bigEqual.out;
 
     component smallLessThan = LessThan(130);
     smallLessThan.in[0] <== ivc_input[0];
-    smallLessThan.in[1] <== frogMessageHashSmall;
+    smallLessThan.in[1] <== contentIDSmall;
     signal smallLessThanResult <== smallLessThan.out;
 
     // bigLessThanResult OR (bigEqualResult AND smallLessThanResult)
@@ -85,8 +86,8 @@ template frogIVC () {
     (1-bigLessThanResult)*(1-bigEq_and_smallLess) === 0;
 
     // put in the new frogMessageHash as ivc_output
-    ivc_output[0] <== frogMessageHashSmall;
-    ivc_output[1] <== frogMessageHashBig;
+    ivc_output[0] <== contentIDSmall;
+    ivc_output[1] <== contentIDBig;
     ivc_output[2] <== ivc_input[2] + 1;
 
 }
