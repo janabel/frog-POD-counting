@@ -115,12 +115,14 @@ export function Prover(): ReactNode {
     console.log("parsedFrogs", parsedFrogs);
 
     // sort frogs now
-    // create an array of [frogMsgHash, parsedfrog]
+    // create an array of [frogContentID, parsedfrog]
     const frogHash_and_frog_array: Array<frogTuple> = await Promise.all(
       parsedFrogs.map(async (parsedFrog: frogPOD) => {
-        const frogHashInput = await getFrogHashInput(parsedFrog);
-        const frogMsgHash = await computePoseidonHash(frogHashInput);
-        return [frogMsgHash, parsedFrog];
+        const frogContentID = BigInt(parsedFrog.contentID);
+
+        // const frogHashInput = await getFrogHashInput(parsedFrog);
+        // const frogContentID = await computePoseidonHash(frogHashInput);
+        return [frogContentID, parsedFrog];
       })
     );
 

@@ -1,9 +1,12 @@
 import { PODData } from "@parcnet-js/podspec";
-import { PODName, PODStringValue } from "@pcd/pod";
+import { POD } from "@pcd/pod";
+import { PODName, PODStringValue, PODValue } from "@pcd/pod";
 import { decodeSignature } from "@pcd/pod";
 import { SIGNATURE_REGEX, SIGNATURE_ENCODING_GROUPS } from "@pcd/pod";
 import { decodePublicKey } from "@pcd/pod";
 import { PUBLIC_KEY_REGEX, PUBLIC_KEY_ENCODING_GROUPS } from "@pcd/pod";
+import { podMerkleTreeHash, podNameHash, podValueHash } from "@pcd/pod";
+import { LeanIMT, LeanIMTMerkleProof } from "@zk-kit/lean-imt";
 
 interface Owner {
   cryptographic: string;
@@ -33,24 +36,42 @@ export interface frogPOD {
   reservedField1: string;
   reservedField2: string;
   reservedField3: string;
+  contentID: string;
+}
+
+export async function getContentID(frogPODData: PODData) {
+  const entries = frogPODData.entries;
+
+  // create new POD from PODdata
+  const frogPOD = POD.load(
+    frogPODData.entries,
+    frogPODData.signature,
+    frogPODData.signerPublicKey
+  );
+  const contentID = frogPOD.contentID;
+  return contentID;
 }
 
 export async function parseFrogPOD(
-  frogPOD: PODData,
+  frogPODData: PODData,
   semaphoreIdentityCommitment: bigint
 ): Promise<frogPOD> {
-  const entries = frogPOD.entries;
+  const entries = frogPODData.entries;
+  console.log("entries", entries);
 
-  const signature = frogPOD.signature;
-  const signerPublicKey = frogPOD.signerPublicKey;
+  const signature = frogPODData.signature;
+  const signerPublicKey = frogPODData.signerPublicKey;
+  const contentID = await getContentID(frogPODData);
+  console.log("contentID", contentID);
 
   const unpackedSignature = decodeSignature(signature);
-  // console.log('unpackedSignature', unpackedSignature);
+  console.log("unpackedSignature", unpackedSignature);
   const frogSignatureR8x = unpackedSignature.R8[0];
   const frogSignatureR8y = unpackedSignature.R8[1];
   const frogSignatureS = unpackedSignature.S;
 
   const unpackedPublicKey = decodePublicKey(signerPublicKey);
+  console.log("unpackedSignature", unpackedPublicKey);
   const frogSignerPubkeyAx = unpackedPublicKey[0];
   const frogSignerPubkeyAy = unpackedPublicKey[1];
 
@@ -70,7 +91,6 @@ export async function parseFrogPOD(
     intelligence: entries.intelligence.value.toString(),
     beauty: entries.beauty.value.toString(),
     timestampSigned: entries.timestampSigned.value.toString(),
-    // ownerSemaphoreId: (entries.owner as Owner).cryptographic,
     ownerSemaphoreId: entries.owner.value.toString(),
     frogSignerPubkeyAx: frogSignerPubkeyAx.toString(),
     frogSignerPubkeyAy: frogSignerPubkeyAy.toString(),
@@ -84,107 +104,6 @@ export async function parseFrogPOD(
     reservedField1: "0",
     reservedField2: "0",
     reservedField3: "0",
+    contentID: contentID.toString(),
   };
 }
-
-// // use while waiting for zupass
-// export async function parseFrogPODTemp(
-//   frogPOD: PODData,
-//   semaphoreIdentityCommitment: bigint
-// ): Promise<frogPOD> {
-//   // dummy test pods have all entries already formatted correctly
-
-//   const entries = frogPOD.entries;
-
-//   return {
-//     frogId: entries.frogId.value.toString(),
-//     biome: entries.biome.value.toString(),
-//     rarity: entries.rarity.value.toString(),
-//     temperament: entries.temperament.value.toString(),
-//     jump: entries.jump.value.toString(),
-//     speed: entries.speed.value.toString(),
-//     intelligence: entries.intelligence.value.toString(),
-//     beauty: entries.beauty.value.toString(),
-//     timestampSigned: entries.timestampSigned.value.toString(),
-//     ownerSemaphoreId: entries.ownerSemaphoreId.value.toString(),
-//     frogSignerPubkeyAx: entries.frogSignerPubkeyAx.value.toString(),
-//     frogSignerPubkeyAy: entries.frogSignerPubkeyAy.value.toString(),
-//     semaphoreIdentityCommitment: semaphoreIdentityCommitment.toString(),
-//     watermark: entries.watermark.value.cryptographic.toString(),
-//     frogSignatureR8x: entries.frogSignatureR8x.value.toString(),
-//     frogSignatureR8y: entries.frogSignatureR8y.value.toString(),
-//     frogSignatureS: entries.frogSignatureS.value.toString(),
-//     externalNullifier: entries.externalNullifier.value.toString(),
-//     reservedField1: entries.reservedField1.value.toString(),
-//     reservedField2: entries.reservedField2.value.toString(),
-//     reservedField3: entries.reservedField3.value.toString(),
-//   };
-// }
-
-// type Owner = {
-//   cryptographic: string;
-//   value: object;
-// };
-// interface StringEntry {
-//   type: "string";
-//   value: string;
-// }
-// export type PODValue = StringEntry | Owner;
-// type PODEntries = Record<PODName, PODValue>;
-
-// export interface PODData {
-//   entries: PODEntries;
-//   signature: string;
-//   signerPublicKey: string;
-// }
-
-// export type StringPOD = {
-//   entries: Record<PODName, PODValue>;
-//   signature: string;
-//   signerPublicKey: string;
-// };
-
-// function assert(condition: boolean, message = "Assertion failed") {
-//   console.log(condition);
-//   if (!condition) {
-//     throw new Error(message);
-//   }
-// }
-
-// function base64ToHex(base64String: string): string {
-//   const binaryString = atob(base64String);
-//   let hexString = "";
-//   for (let i = 0; i < binaryString.length; i++) {
-//     const hex = binaryString.charCodeAt(i).toString(16).padStart(2, "0");
-//     hexString += hex;
-//   }
-//   return hexString;
-// }
-
-// function extractSignerPublicKeyCoordinates(base64PubKey: string): {
-//   frogSignerPubkeyAx: string;
-//   frogSignerPubkeyAy: string;
-// } {
-//   // Step 1: Decode the Base64 public key
-//   const binaryPubKey = Uint8Array.from(atob(base64PubKey), (c) =>
-//     c.charCodeAt(0)
-//   );
-
-//   // Step 2: Check the length of the decoded public key
-//   if (binaryPubKey.length !== 32) {
-//     throw new Error("Invalid public key length. Expected 32 bytes.");
-//   }
-
-//   // Step 3: Extract x and y coordinates
-//   const frogSignerPubkeyAx = Array.from(binaryPubKey.slice(0, 16))
-//     .map((byte) => byte.toString(16).padStart(2, "0"))
-//     .join(""); // First 16 bytes (128 bits) for x
-//   const frogSignerPubkeyAy = Array.from(binaryPubKey.slice(16, 32))
-//     .map((byte) => byte.toString(16).padStart(2, "0"))
-//     .join(""); // Last 16 bytes (128 bits) for y
-
-//   return {
-//     frogSignerPubkeyAx,
-//     frogSignerPubkeyAy,
-//   };
-// }
