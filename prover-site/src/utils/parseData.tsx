@@ -1,18 +1,7 @@
 import { PODData } from "@parcnet-js/podspec";
 import { POD } from "@pcd/pod";
-import { PODName, PODStringValue, PODValue } from "@pcd/pod";
 import { decodeSignature } from "@pcd/pod";
-import { SIGNATURE_REGEX, SIGNATURE_ENCODING_GROUPS } from "@pcd/pod";
 import { decodePublicKey } from "@pcd/pod";
-import { PUBLIC_KEY_REGEX, PUBLIC_KEY_ENCODING_GROUPS } from "@pcd/pod";
-import { podMerkleTreeHash, podNameHash, podValueHash } from "@pcd/pod";
-import { LeanIMT, LeanIMTMerkleProof } from "@zk-kit/lean-imt";
-
-interface Owner {
-  cryptographic: string;
-  type: "string";
-  value: string;
-}
 
 export interface frogPOD {
   frogId: string;
@@ -40,8 +29,6 @@ export interface frogPOD {
 }
 
 export async function getContentID(frogPODData: PODData) {
-  const entries = frogPODData.entries;
-
   // create new POD from PODdata
   const frogPOD = POD.load(
     frogPODData.entries,

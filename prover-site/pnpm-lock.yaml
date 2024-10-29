@@ -50,6 +50,9 @@ importers:
       '@wasm-tool/wasm-pack-plugin':
         specifier: ^1.7.0
         version: 1.7.0
+      '@zk-kit/lean-imt':
+        specifier: ^2.2.1
+        version: 2.2.1
       buffer:
         specifier: ^6.0.3
         version: 6.0.3

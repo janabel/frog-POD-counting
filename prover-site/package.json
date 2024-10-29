@@ -24,6 +24,7 @@
     "@pcd/util": "0.5.3",
     "@pcd/zupass-client": "^0.0.2",
     "@wasm-tool/wasm-pack-plugin": "^1.7.0",
+    "@zk-kit/lean-imt": "^2.2.1",
     "buffer": "^6.0.3",
     "circomlibjs": "^0.1.7",
     "framer-motion": "^11.11.10",
