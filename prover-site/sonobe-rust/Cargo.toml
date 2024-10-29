@@ -35,11 +35,11 @@ ark-std = "0.4.0"
 color-eyre = "0.6.2"
 num-bigint = "0.4.3"
 
-# folding-schemes = { path="./sonobe/folding-schemes", version = "0.1.0", default-features = false, features = ["parallel", "wasm"] }
-# folding-schemes = { git = "https://github.com/privacy-scaling-explorations/sonobe",  branch = "feat/wasm-IO-compat", package = "folding-schemes", version = "0.1.0", default-features = false, features = ["parallel", "wasm"] }
-# folding-schemes = { git = "https://github.com/czhang2718/sonobe", package = "folding-schemes", features = ["parallel", "wasm"], branch = "nova-decider-serialization", default-features = false }
-# folding-schemes = { git = "https://github.com/janabel/sonobe", package = "folding-schemes", branch="ivc-proofs", features=["parallel", "wasm"], default-feature=false} # for debugging pedersen ivc_proof.verify
-folding-schemes = { git = "https://github.com/privacy-scaling-explorations/sonobe", package = "folding-schemes", branch="main", features = ["parallel", "wasm"], default-features = false }
+# TODO: clean this up
+# folding-schemes = { git = "https://github.com/privacy-scaling-explorations/sonobe", package = "folding-schemes", branch="main"}
+folding-schemes = { git = "https://github.com/janabel/sonobe", package = "folding-schemes", rev = "cb1b8e3", features = ["parallel", "wasm"], default-features = false }
+# frontends = { git = "https://github.com/privacy-scaling-explorations/sonobe", package = "frontends", branch="main"}
+# wasmer = {version = "4.4.0", features = ["compiler", "engine"]} # Use the latest version available
 
 serde = "1.0.198"
 serde_json = "1.0.116"

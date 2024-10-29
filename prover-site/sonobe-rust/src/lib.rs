@@ -35,14 +35,13 @@ use folding_schemes::commitment::CommitmentScheme;
 use folding_schemes::{
     commitment::{kzg::KZG, pedersen::Pedersen},
     folding::nova::{
-        decider_eth::{prepare_calldata, Decider as DeciderEth, VerifierParam},
         Nova, PreprocessorParam,
         ProverParams, VerifierParams,
     },
     frontend::{circom::CircomFCircuit, FCircuit},
-    transcript::poseidon::poseidon_canonical_config,
-    Decider, FoldingScheme,
+    transcript::poseidon::poseidon_canonical_config, FoldingScheme,
 };
+// use frontends::circom::CircomFCircuit, 
 
 use std::path::PathBuf;
 use std::time::Instant;
@@ -100,6 +99,7 @@ struct Frog {
     reservedField1: String,
     reservedField2: String,
     reservedField3: String,
+    contentID: String,
 }
 
 fn str_to_fr(input_string: &str)-> Fr {
@@ -142,6 +142,7 @@ fn frog_to_fr_vector(frog: &Frog) -> Vec<Fr> {
         str_to_fr(&frog.reservedField1),
         str_to_fr(&frog.reservedField2),
         str_to_fr(&frog.reservedField3),
+        str_to_fr(&frog.contentID),
     ];
 }
 
@@ -190,7 +191,7 @@ pub fn frog_nova(r1cs_bytes: Vec<u8>,
 
     let start = get_current_time_in_millis();
         // (r1cs_bytes, wasm_bytes, state_len, external_inputs_len)
-        let f_circuit_params = (r1cs_bytes.into(), wasm_bytes.into(), 3, 21);
+        let f_circuit_params = (r1cs_bytes.into(), wasm_bytes.into(), 3, 22);
         let mut f_circuit = CircomFCircuit::<Fr>::new(f_circuit_params.clone()).unwrap();
         
         let end = get_current_time_in_millis();
