@@ -21,10 +21,11 @@ use folding_schemes::{
         Nova, PreprocessorParam,
         ProverParams, VerifierParams,
     },
-    frontend::{circom::CircomFCircuit, FCircuit},
+    frontend::{FCircuit},
     transcript::poseidon::poseidon_canonical_config,
     Decider, FoldingScheme,
 };
+use frontends::{circom::CircomFCircuit};
 
 use std::path::PathBuf;
 use std::fs::File;

@@ -24,10 +24,11 @@ use folding_schemes::{
         Nova, PreprocessorParam,
         ProverParams, VerifierParams, IVCProof,
     },
-    frontend::{circom::CircomFCircuit, FCircuit},
+    frontend::{FCircuit},
     transcript::poseidon::poseidon_canonical_config,
     Decider, FoldingScheme,
 };
+use frontends::{circom::CircomFCircuit};
 
 use std::fs;
 use std::fs::File;
