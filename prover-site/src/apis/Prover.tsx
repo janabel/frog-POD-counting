@@ -5,8 +5,6 @@ import { TryIt } from "../components/TryIt";
 import { useEmbeddedZupass } from "../hooks/useEmbeddedZupass";
 import { parseFrogPOD, frogPOD } from "../utils/parseData";
 import { createProof } from "../utils/runSonobe";
-// import { testFrog1, testFrog2, testFrog3 } from "../testfrogs";
-import { buildPoseidon } from "circomlibjs";
 import { Spinner } from "@chakra-ui/react";
 
 type frogTuple = [bigint, frogPOD];
@@ -15,53 +13,6 @@ export function Prover(): ReactNode {
   const { z, connected } = useEmbeddedZupass();
   const [ivc_proof, setIvcProof] = useState(new Uint8Array([]));
   const [proving, setProving] = useState(false);
-
-  // async function makeTestFrogs() {
-  //   // add test frogs to Collections/FrogCryptoTest folder while we wait for zupass team to migrate FrogCrypto over to Collections
-
-  //   // console.log("Sample entries", sampleEntries);
-  //   const signedTestFrog1POD = await z.pod.sign(testFrog1);
-  //   const signedTestFrog2POD = await z.pod.sign(testFrog2);
-  //   const signedTestFrog3POD = await z.pod.sign(testFrog3);
-
-  //   console.log("signedTestFrog1POD", signedTestFrog1POD);
-  //   console.log("signedTestFrog2POD", signedTestFrog2POD);
-  //   console.log("signedTestFrog3POD", signedTestFrog3POD);
-
-  //   await z.pod.collection("FrogCryptoTest").insert(signedTestFrog1POD);
-  //   await z.pod.collection("FrogCryptoTest").insert(signedTestFrog2POD);
-  //   await z.pod.collection("FrogCryptoTest").insert(signedTestFrog3POD);
-
-  //   console.log(
-  //     "should have added testFrog1, testFrog2, testFrog3 to folder Collections/FrogCryptoTest"
-  //   );
-
-  //   return;
-  // }
-
-  async function computePoseidonHash(inputArray: Array<bigint>) {
-    const poseidon = await buildPoseidon();
-    const hash = poseidon.F.toString(poseidon(inputArray));
-    return hash;
-  }
-
-  async function getFrogHashInput(parsedFrog: frogPOD) {
-    return [
-      BigInt(parsedFrog.frogId),
-      BigInt(parsedFrog.biome),
-      BigInt(parsedFrog.rarity),
-      BigInt(parsedFrog.temperament),
-      BigInt(parsedFrog.jump),
-      BigInt(parsedFrog.speed),
-      BigInt(parsedFrog.intelligence),
-      BigInt(parsedFrog.beauty),
-      BigInt(parsedFrog.timestampSigned),
-      BigInt(parsedFrog.ownerSemaphoreId),
-      BigInt(parsedFrog.reservedField1),
-      BigInt(parsedFrog.reservedField2),
-      BigInt(parsedFrog.reservedField3),
-    ];
-  }
 
   async function getID() {
     const semaphoreIDCommitment = await z.identity.getSemaphoreV4Commitment();
@@ -81,13 +32,8 @@ export function Prover(): ReactNode {
     );
   }
 
-  // async function processProofInputs(): Promise<object> {
   async function processProofInputs() {
-    // first make test frogs to insert to FrogCryptoTest
-    // await makeTestFrogs(); // only run once
-    // console.log("made test frogs!");
-
-    // then get semaphore ID commitment
+    // get semaphore ID commitment
     const semaphoreIDCommitment = await getID();
     console.log("semaphoreIDCommitment", semaphoreIDCommitment);
     // const semaphoreIDCommitment = result;
