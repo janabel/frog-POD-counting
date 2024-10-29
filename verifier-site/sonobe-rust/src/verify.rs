@@ -80,7 +80,7 @@ pub fn verifyRust(r1cs_bytes: Vec<u8>,
 
     // create f_circuit_params (necessary for deserializing params)
     let start = get_current_time_in_millis();
-        let f_circuit_params = (r1cs_bytes.into(), wasm_bytes.into(), 3, 21);
+        let f_circuit_params = (r1cs_bytes.into(), wasm_bytes.into(), 3, 22);
 
         let end = get_current_time_in_millis();
         let elapsed = end - start;
