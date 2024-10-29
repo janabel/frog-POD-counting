@@ -1,10 +1,10 @@
 # Frog Counting
 
-Frog Counting will consist of two websites: Frog Whisperer, and Frog Counter.
+Frog Counting will consist of two websites built on Zupass: Frog Counter and Frog Whisperer.
 
-Frog Whisperer (built on Zupass) will ultimately issue the user `FrogWhisperer` PODs that they can cash in at the merch store at DevCon (!).
+Frog Whisperer (built on Zupass) will ultimately issue the user `FrogWhisperer` PODs, i.e. PODs that certify ownership of many Frog PODs from [FrogCrypto][https://frogcrypto.vercel.app/].
 
-The user first navigates to Frog Counter (also built on Zupass). Frog Counter will allow the user to i) fetch their Frogs from Zupass and ii) generate a proof that says “I have N frogs” (where N can be very large, thanks to Sonobe/folding schemes). The website then:
+The user first navigates to Frog Counter. Frog Counter will allow the user to i) fetch their Frogs from Zupass and ii) generate a proof that says “I have N frogs” (where N can be very large, thanks to Sonobe/folding schemes). The website then:
 
 - Gets an array of `Frogs` from Zupass (using the new ZApp API!)
 - Generate Circuit Inputs
