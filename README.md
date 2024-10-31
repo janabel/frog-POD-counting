@@ -10,6 +10,17 @@ These websites together form a proof-of-concept app demonstrating the theoretica
 
 ---
 
+# Local Dev
+
+To run the Frog Counter (prover site), cd into the prover-site and then type the following into the CLI:
+```
+pnpm install
+pnpm dev
+```
+To run the Frog Whisperer Exchange Exchange (verifier site), cd into the verifier-site and type the same commands as above.
+
+---
+
 # Preliminaries
 
 ## PODs
@@ -92,18 +103,3 @@ This issue would be solved if we used a full Decider proof instead of just extra
 Currently there are several slow steps within folding in the browser:
 - <u>Witness generation</u>: Currently, the Sonobe library takes in a Web Assembly (WASM) file as instructions for witness generation at each IVC step. Because we then compile the API from Sonobe into wasm for our web app, our website is now simulating WASM within WASM. Carlos from the PSE team and a key contributor of the Sonobe library did wonderful work on modifying snarkjs to allow us to generate witnesses outside of WASM, as well as modifying Sonobe to be able to take in all serialized witnesses directly for the folding. With these new APIs, the runtimes for each `prove_step` are still similar in the CLI but we are hopeful that here is less overhead when compiling to WASM. We are currently working on integrating these into the project.
 - <u>Parameter serialization</u>: serializing the `nova_vp` takes 6 seconds, but perhaps there are optimizations we can do with serializing parameters in WASM with Web Workers.
-
----
-
-# Local Dev
-
-To run the Frog Counter (prover site), cd into the prover-site and then type the following into the CLI:
-```
-pnpm install
-pnpm dev
-```
-To run the Frog Whisperer Exchange Exchange (verifier site), cd into the verifier-site and type the same commands as above.
-
-
-
-
