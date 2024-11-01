@@ -6,7 +6,7 @@ The user may first navigate to Frog Counter, which will allow the user to i) fet
 
 Upon creating a proof with Frog Counter, the user may then navigate to the Frog Whisperer Exchange site. This second site will ultimately issue the user `FrogWhisperer` PODs certifying ownership of many Frog PODs from [FrogCrypto](https://frogcrypto.vercel.app/).
 
-These websites together form a proof-of-concept app demonstrating the theoretical power of folding schemes and using the POD cryptographic data type. By combining the two, we have essentially found a way to turn PODs into a (private) currency -- one can both privately and verifiably trade in many PODs of one type into a POD of another type. Private because we don't need to reveal information about the PODs themselves (besides currently the message hash, see more in "Future Work"), and verifiable because the Frog Whisperer Exchange site verifies a folding proof.
+These websites together form a proof-of-concept app demonstrating the theoretical power of folding schemes and using the POD cryptographic data type. By combining the two, we have essentially found a way to turn PODs (general cryptographic data) into a private currency -- one can both privately and verifiably trade in many PODs of one type into a POD of another type. Private because we don't need to reveal information about the PODs themselves (besides currently the message hash, see more in "Future Work"), and verifiable because the Frog Whisperer Exchange site verifies a folding proof. While this proof-of-concept exists in isolation on the web, we hope that Sonobe gets integrated into the current [GPC](https://github.com/proofcarryingdata/zupass/tree/main/packages/lib/gpc) library for making general proofs about PODs.
 
 ---
 
